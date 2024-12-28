@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sql_playground/helper/sqlite.dart';
+import 'package:sql_playground/modules/playground/presentation/playground_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SQLite Playground',
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.black),
+      theme: ThemeData.dark(useMaterial3: true),
+      themeMode: ThemeMode.dark,
       home: const MyHomePage(title: 'Flutter SQLite Playground Demo'),
     );
   }
@@ -65,24 +67,22 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('table Users records length ${_userRecord.length}'),
-              const Text(
-                'Table name',
-              ),
-              ..._tablesName.map((tbName) => Text(tbName))
-            ],
+      backgroundColor: Colors.grey.withOpacity(0.2),
+      body: SingleChildScrollView(child: PlaygroundView()
+          //Column(
+          //  crossAxisAlignment: CrossAxisAlignment.start,
+          //  mainAxisAlignment: MainAxisAlignment.center,
+          //  children: <Widget>[
+          //    Text('table Users records length ${_userRecord.length}'),
+          //    const Text(
+          //      'Table name,
+          //    ),
+          //    ..._tablesName.map((tbName) => Text(tbName))
+          //  ],
+          //),
           ),
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await insertUser();
