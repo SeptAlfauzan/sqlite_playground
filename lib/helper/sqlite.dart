@@ -1,4 +1,6 @@
-import 'package:sqflite/sqflite.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 class SQLite {
   static final SQLite _instance = SQLite._internal();
@@ -32,6 +34,17 @@ class SQLite {
           address TEXT NOT NULL
         )
     ''';
+
+    if (kIsWeb) {
+      sqfliteFfiInit();
+      final databaseFactory = databaseFactoryFfiWeb;
+      final db = await databaseFactory.openDatabase(inMemoryDatabasePath);
+
+      await db.execute(sqlUser);
+      await db.execute(sqlEducation);
+
+      return db;
+    }
 
     return await openDatabase(':memory:', version: 1,
         onCreate: (Database db, int version) async {

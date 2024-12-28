@@ -47,7 +47,6 @@ class _EditorState extends State<Editor> {
             shape: BoxShape.rectangle,
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         height: widget.height,
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
         child: FutureBuilder<Highlighter>(
           future: _highlighter,
           builder: (context, snapshot) {
@@ -84,7 +83,7 @@ class _EditorState extends State<Editor> {
                   ),
                   decoration: const InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 0),
                     border: InputBorder.none,
                     fillColor: Colors.transparent,
                     filled: true,
@@ -92,13 +91,16 @@ class _EditorState extends State<Editor> {
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                 ),
-                Text.rich(
-                  _hightlighedCode,
-                  style: const TextStyle(
-                    letterSpacing: 1,
-                    height: 1.5,
-                    fontFamily: 'monospace',
-                    fontSize: 14,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+                  child: Text.rich(
+                    _hightlighedCode,
+                    style: const TextStyle(
+                      letterSpacing: 1,
+                      height: 1.5,
+                      fontFamily: 'monospace',
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],
