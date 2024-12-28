@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       backgroundColor: Colors.grey.withOpacity(0.2),
-      body: SingleChildScrollView(child: PlaygroundView()
+      body: SingleChildScrollView(child: PlaygroundView(records: _userRecord)
           //Column(
           //  crossAxisAlignment: CrossAxisAlignment.start,
           //  mainAxisAlignment: MainAxisAlignment.center,
