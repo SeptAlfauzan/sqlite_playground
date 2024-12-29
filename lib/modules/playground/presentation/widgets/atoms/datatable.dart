@@ -21,37 +21,54 @@ class _DatatableState extends State<Datatable> {
             width: 20,
             height: 20,
           )
-        : SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: <DataColumn>[
-                ...keys
-                    .map((key) => DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              key,
-                              style: TextStyle(fontStyle: FontStyle.italic),
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DataTable(
+                columns: <DataColumn>[
+                  ...keys.map(
+                    (key) => DataColumn(
+                      label: Expanded(
+                        //alignment: Alignment.centerLeft,
+                        child: Text(key, textAlign: TextAlign.left),
+                        //                  textAlign: TextAlign.left,
+                      ),
+                    ),
+                  )
+                ],
+                rows: const [],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: DataTable(
+                      headingRowHeight: 0,
+                      columns: <DataColumn>[
+                        ...keys.map(
+                          (key) => DataColumn(
+                            label: Expanded(
+                              child: Text(key),
                             ),
                           ),
-                        ))
-                    .toList()
-              ],
-              rows: [
-                ...entries.map(
-                  (entry) => DataRow(
-                    cells: <DataCell>[
-                      ...keys.map(
-                        (key) => DataCell(
-                          Text(
-                            entry[key].toString(),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                        )
+                      ],
+                      rows: entries
+                          .map(
+                            (entry) => DataRow(
+                              cells: <DataCell>[
+                                ...keys.map(
+                                  (key) => DataCell(
+                                    Text(
+                                      entry[key].toString(),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                          .toList()),
+                ),
+              )
+            ],
           );
   }
 }

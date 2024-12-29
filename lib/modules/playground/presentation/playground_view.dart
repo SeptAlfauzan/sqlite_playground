@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sql_playground/helper/sqlite.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/datatable.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/organism/editor.dart';
+import 'package:sql_playground/ui/window_screen.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
 class PlaygroundView extends StatefulWidget {
@@ -47,6 +48,8 @@ class _PlaygroundViewState extends State<PlaygroundView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeightSize = WindowScreen().calculateScreenHeight(context);
+
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: AppBar(
@@ -57,13 +60,16 @@ class _PlaygroundViewState extends State<PlaygroundView> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
+          const Expanded(
+            child: Editor(
+              height: 200,
+            ),
+          ),
+          SizedBox(
+            height: screenHeightSize == ScreenHeightSize.COMPACT ? 120 : 240,
             child: Datatable(
               records: _userRecord,
             ),
-          ),
-          const Editor(
-            height: 200,
           )
         ],
       ),
