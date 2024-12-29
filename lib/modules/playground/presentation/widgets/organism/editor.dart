@@ -3,7 +3,8 @@ import 'package:syntax_highlight/syntax_highlight.dart';
 
 class Editor extends StatefulWidget {
   final double height;
-  const Editor({super.key, required this.height});
+  final Function(String code) onUpdate;
+  const Editor({super.key, required this.height, required this.onUpdate});
   @override
   State<Editor> createState() => _EditorState();
 }
@@ -26,6 +27,7 @@ class _EditorState extends State<Editor> {
       setState(() {
         _hightlighedCode = hightLighter.highlight(_editorController.text);
       });
+      widget.onUpdate(_editorController.text);
     }
   }
 

@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       theme: getDarkTheme(),
       themeMode: ThemeMode.dark,
       home: const PlaygroundView(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

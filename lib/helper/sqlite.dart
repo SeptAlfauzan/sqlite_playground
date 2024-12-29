@@ -70,4 +70,8 @@ class SQLite {
             (table['name'] ?? table['tbl_name'] ?? 'no_name').toString())
         .toList();
   }
+
+  Future<dynamic> executeRawQuery(String query) async {
+    await SQLite._database?.rawQuery(query);
+  }
 }

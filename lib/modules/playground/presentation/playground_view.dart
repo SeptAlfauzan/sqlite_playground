@@ -17,6 +17,7 @@ class _PlaygroundViewState extends State<PlaygroundView> {
   SQLite? sqlite;
   List<Map<String, dynamic>> _userRecord = [];
   List<String> _tablesName = [];
+  String _query = '';
 
   @override
   void initState() {
@@ -60,9 +61,16 @@ class _PlaygroundViewState extends State<PlaygroundView> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Expanded(
+          Expanded(
             child: Editor(
               height: 200,
+              onUpdate: (query) {
+                setState(
+                  () {
+                    _query = query;
+                  },
+                );
+              },
             ),
           ),
           SizedBox(
@@ -85,6 +93,12 @@ class _PlaygroundViewState extends State<PlaygroundView> {
             _userRecord = userRecords;
             _tablesName = tableName ?? [];
           });
+
+          try {
+            await sqlite?.executeRawQuery(_query);
+          } catch (e) {
+            print(e);
+          }
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
