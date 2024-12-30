@@ -10,6 +10,7 @@ class Datatable extends StatefulWidget {
 }
 
 class _DatatableState extends State<Datatable> {
+  final _bgColor = Color(0xFF242c2c);
   @override
   Widget build(BuildContext context) {
     final keys =
@@ -17,58 +18,64 @@ class _DatatableState extends State<Datatable> {
     final entries = widget.records.isEmpty ? [] : widget.records.toList();
 
     return widget.records.isEmpty
-        ? const SizedBox(
-            width: 20,
-            height: 20,
+        ? Container(
+            width: double.infinity,
+            color: _bgColor,
           )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DataTable(
-                columns: <DataColumn>[
-                  ...keys.map(
-                    (key) => DataColumn(
-                      label: Expanded(
-                        //alignment: Alignment.centerLeft,
-                        child: Text(key, textAlign: TextAlign.left),
-                        //                  textAlign: TextAlign.left,
+        : Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: _bgColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DataTable(
+                  columns: <DataColumn>[
+                    ...keys.map(
+                      (key) => DataColumn(
+                        label: Expanded(
+                          //alignment: Alignment.centerLeft,
+                          child: Text(key, textAlign: TextAlign.left),
+                          //                  textAlign: TextAlign.left,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-                rows: const [],
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: DataTable(
-                      headingRowHeight: 0,
-                      columns: <DataColumn>[
-                        ...keys.map(
-                          (key) => DataColumn(
-                            label: Expanded(
-                              child: Text(key),
-                            ),
-                          ),
-                        )
-                      ],
-                      rows: entries
-                          .map(
-                            (entry) => DataRow(
-                              cells: <DataCell>[
-                                ...keys.map(
-                                  (key) => DataCell(
-                                    Text(
-                                      entry[key].toString(),
-                                    ),
-                                  ),
-                                )
-                              ],
+                    )
+                  ],
+                  rows: const [],
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: DataTable(
+                        headingRowHeight: 0,
+                        columns: <DataColumn>[
+                          ...keys.map(
+                            (key) => DataColumn(
+                              label: Expanded(
+                                child: Text(key),
+                              ),
                             ),
                           )
-                          .toList()),
-                ),
-              )
-            ],
+                        ],
+                        rows: entries
+                            .map(
+                              (entry) => DataRow(
+                                cells: <DataCell>[
+                                  ...keys.map(
+                                    (key) => DataCell(
+                                      Text(
+                                        entry[key].toString(),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                            .toList()),
+                  ),
+                )
+              ],
+            ),
           );
   }
 }

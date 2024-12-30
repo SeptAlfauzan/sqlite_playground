@@ -52,7 +52,7 @@ class _PlaygroundViewState extends State<PlaygroundView> {
     final screenHeightSize = WindowScreen().calculateScreenHeight(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.2),
+      backgroundColor: Colors.black.withOpacity(1),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text("Playground"),
@@ -73,6 +73,12 @@ class _PlaygroundViewState extends State<PlaygroundView> {
               },
             ),
           ),
+          const Divider(
+            height: 1,
+            thickness: 0.4,
+            endIndent: 0,
+            color: Colors.grey,
+          ),
           SizedBox(
             height: screenHeightSize == ScreenHeightSize.COMPACT ? 120 : 240,
             child: Datatable(
@@ -81,6 +87,7 @@ class _PlaygroundViewState extends State<PlaygroundView> {
           )
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await insertUser();
@@ -100,8 +107,8 @@ class _PlaygroundViewState extends State<PlaygroundView> {
             print(e);
           }
         },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        tooltip: 'Run query',
+        child: const Icon(Icons.play_arrow),
       ),
     );
   }
