@@ -44,7 +44,8 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(bottom: 12),
+        color: AppColors.darkBlack,
+        padding: const EdgeInsets.all(0),
         height: widget.height,
         child: FutureBuilder<Highlighter>(
           future: _highlighter,

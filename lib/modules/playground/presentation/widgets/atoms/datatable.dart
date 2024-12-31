@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class Datatable extends StatefulWidget {
   final List<Map<String, dynamic>> records;
@@ -22,13 +21,9 @@ class _DatatableState extends State<Datatable> {
     return widget.records.isEmpty
         ? Container(
             width: double.infinity,
-            color: _bgColor,
           )
         : Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: _bgColor,
-            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,31 +44,32 @@ class _DatatableState extends State<Datatable> {
                 Expanded(
                   child: SingleChildScrollView(
                     child: DataTable(
-                        headingRowHeight: 0,
-                        columns: <DataColumn>[
-                          ...keys.map(
-                            (key) => DataColumn(
-                              label: Expanded(
-                                child: Text(key),
-                              ),
+                      headingRowHeight: 0,
+                      columns: <DataColumn>[
+                        ...keys.map(
+                          (key) => DataColumn(
+                            label: Expanded(
+                              child: Text(key),
+                            ),
+                          ),
+                        )
+                      ],
+                      rows: entries
+                          .map(
+                            (entry) => DataRow(
+                              cells: <DataCell>[
+                                ...keys.map(
+                                  (key) => DataCell(
+                                    Text(
+                                      entry[key].toString(),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           )
-                        ],
-                        rows: entries
-                            .map(
-                              (entry) => DataRow(
-                                cells: <DataCell>[
-                                  ...keys.map(
-                                    (key) => DataCell(
-                                      Text(
-                                        entry[key].toString(),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                            .toList()),
+                          .toList(),
+                    ),
                   ),
                 )
               ],

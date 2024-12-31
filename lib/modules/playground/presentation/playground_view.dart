@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sql_playground/helper/sqlite.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/datatable.dart';
+import 'package:sql_playground/modules/playground/presentation/widgets/atoms/output_time_devider.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/zah_custom_path.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/zah_custom_path_reverse.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/organism/editor.dart';
@@ -99,11 +100,19 @@ class _PlaygroundViewState extends State<PlaygroundView> {
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await onPressRun();
-                    },
-                    child: const Text("Run"),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        foregroundColor: WidgetStateProperty.all(Colors.black),
+                        backgroundColor:
+                            WidgetStateProperty.all(AppColors.lime),
+                      ),
+                      onPressed: () async {
+                        await onPressRun();
+                      },
+                      child: const Text("Run"),
+                    ),
                   ),
                 ),
               ],
@@ -120,46 +129,7 @@ class _PlaygroundViewState extends State<PlaygroundView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ClipPath(
-                        clipper: ZahCustomPath(),
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: Color(0xFFA89984),
-                          ),
-                          width: 100,
-                          child: Text(
-                            "Output",
-                            style: TextStyle(color: Color(0xFF282828)),
-                          ),
-                        ),
-                      ),
-                      ClipPath(
-                        clipper: ZahCustomPathRevese(),
-                        child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              color: AppColors.darkGreen,
-                            ),
-                            width: 100,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(Icons.hourglass_top_outlined),
-                                Text(
-                                  "12:12",
-                                  style: TextStyle(color: Color(0xFF282828)),
-                                ),
-                              ],
-                            )),
-                      ),
-                    ],
-                  ),
+                  const OutputTimeDevider(),
                   Expanded(
                     child: Datatable(
                       records: _userRecord,
