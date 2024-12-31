@@ -18,10 +18,15 @@ class _OutputTimeDeviderState extends State<OutputTimeDevider> {
   void _initializeCurrentTime() {
     const oneSec = Duration(seconds: 1);
     Timer.periodic(
-        oneSec,
-        (Timer t) => setState(() {
-              time = DateTime.now().toString();
-            }));
+      oneSec,
+      (Timer t) => mounted
+          ? setState(
+              () {
+                time = DateTime.now().toString();
+              },
+            )
+          : null,
+    );
   }
 
   @override
@@ -32,27 +37,29 @@ class _OutputTimeDeviderState extends State<OutputTimeDevider> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        ClipPath(
-          clipper: ZahCustomPath(),
-          child: Container(
-            padding: const EdgeInsets.all(4),
-            decoration: const BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Color(0xFFA89984),
-            ),
-            width: 100,
-            child: const Text(
-              "Output",
-              style: TextStyle(color: Color(0xFF282828)),
+    return Container(
+      color: AppColors.greyVariant,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ClipPath(
+            clipper: ZahCustomPath(),
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Color(0xFFA89984),
+              ),
+              width: 100,
+              child: const Text(
+                "Output",
+                style: TextStyle(color: Color(0xFF282828)),
+              ),
             ),
           ),
-        ),
-        ClipPath(
-          clipper: ZahCustomPathRevese(),
-          child: Container(
+          ClipPath(
+            clipper: ZahCustomPathRevese(),
+            child: Container(
               padding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
               decoration: const BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -71,9 +78,11 @@ class _OutputTimeDeviderState extends State<OutputTimeDevider> {
                     style: const TextStyle(color: Colors.white),
                   ),
                 ],
-              )),
-        ),
-      ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
