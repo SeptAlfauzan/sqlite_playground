@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sql_playground/common/presentation/widget/atoms/sidebar_menus.dart';
+import 'package:sql_playground/modules/erd/presentation/erd_view.dart';
 import 'package:sql_playground/modules/playground/presentation/playground_view.dart';
 import 'package:sql_playground/ui/theme.dart';
 import 'package:sql_playground/ui/window_screen.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'SQLite Playground',
       theme: getDarkTheme(),
       themeMode: ThemeMode.dark,
-      home: const ContainerPage(),
+      //home: const ContainerPage(),
+      home: const ErdView(),
       debugShowCheckedModeBanner: false,
     );
   }
