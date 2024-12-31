@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sql_playground/common/presentation/widget/atoms/sidebar_menus.dart';
 import 'package:sql_playground/modules/playground/presentation/playground_view.dart';
 import 'package:sql_playground/ui/theme.dart';
 import 'package:sql_playground/ui/window_screen.dart';
@@ -62,67 +63,7 @@ class _ContainerPageState extends State<ContainerPage> {
           direction: screenSize == ScreenWidthSize.COMPACT
               ? Axis.horizontal
               : Axis.vertical,
-          children: [
-            Flex(
-              direction: screenSize == ScreenWidthSize.COMPACT
-                  ? Axis.vertical
-                  : Axis.horizontal,
-              children: [
-                Icon(Icons.code),
-                const SizedBox(
-                  width: 4,
-                  height: 4,
-                ),
-                Text(
-                  'Playground',
-                  style: TextStyle(
-                      fontSize: screenSize == ScreenWidthSize.COMPACT ? 8 : 12),
-                ),
-              ],
-            ),
-            const SizedBox(
-              width: 12,
-              height: 12,
-            ),
-            Flex(
-              direction: screenSize == ScreenWidthSize.COMPACT
-                  ? Axis.vertical
-                  : Axis.horizontal,
-              children: [
-                Icon(Icons.dataset),
-                const SizedBox(
-                  width: 4,
-                  height: 4,
-                ),
-                Text(
-                  'ERD',
-                  style: TextStyle(
-                      fontSize: screenSize == ScreenWidthSize.COMPACT ? 8 : 12),
-                ),
-              ],
-            ),
-            const SizedBox(
-              width: 12,
-              height: 12,
-            ),
-            Flex(
-              direction: screenSize == ScreenWidthSize.COMPACT
-                  ? Axis.vertical
-                  : Axis.horizontal,
-              children: [
-                Icon(Icons.storage_rounded),
-                const SizedBox(
-                  width: 4,
-                  height: 4,
-                ),
-                Text(
-                  'Databases',
-                  style: TextStyle(
-                      fontSize: screenSize == ScreenWidthSize.COMPACT ? 8 : 12),
-                ),
-              ],
-            )
-          ],
+          children: sideBarMenu(screenSize: screenSize),
         ),
       ),
       Expanded(

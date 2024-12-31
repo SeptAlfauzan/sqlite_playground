@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sql_playground/ui/colors.dart';
 import 'package:syntax_highlight/syntax_highlight.dart';
 
 class Editor extends StatefulWidget {
@@ -43,11 +44,7 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.05),
-            shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.all(Radius.circular(8))),
+        padding: const EdgeInsets.only(bottom: 12),
         height: widget.height,
         child: FutureBuilder<Highlighter>(
           future: _highlighter,
@@ -77,7 +74,7 @@ class _EditorState extends State<Editor> {
                     color: Colors.transparent,
                     shadows: [
                       Shadow(
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.transparent,
                         offset: Offset.zero,
                         blurRadius: 0,
                       ),

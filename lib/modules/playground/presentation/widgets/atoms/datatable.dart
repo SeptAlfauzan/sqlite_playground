@@ -10,7 +10,9 @@ class Datatable extends StatefulWidget {
 }
 
 class _DatatableState extends State<Datatable> {
-  final _bgColor = Color(0xFF242c2c);
+  //final _bgColor = Color(0xFF242c2c);
+  final _bgColor = Colors.black;
+
   @override
   Widget build(BuildContext context) {
     final keys =
