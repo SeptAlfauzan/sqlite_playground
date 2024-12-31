@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sql_playground/modules/playground/presentation/widgets/atoms/datatable.dart';
 import 'package:sql_playground/ui/colors.dart';
+import 'package:sql_playground/ui/theme.dart';
 
 class ErdTable extends StatefulWidget {
   final double initialXpos;
@@ -61,9 +63,79 @@ class _ErdTableState extends State<ErdTable> {
           }
         },
         child: Container(
-          color: AppColors.orange,
-          width: 200,
-          height: 200,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+              color: AppColors.grey,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadiusDirectional.all(Radius.circular(8))),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                child: Row(
+                  children: [
+                    Icon(Icons.table_view),
+                    const SizedBox(
+                      width: 32,
+                    ),
+                    Text("Table Name"),
+                  ],
+                ),
+              ),
+              Container(
+                color: AppColors.darkerGrey,
+                child: DataTable(
+                  columns: [
+                    DataColumn(label: Text('PK')),
+                    DataColumn(label: Text('Column')),
+                    DataColumn(label: Text('DataType')),
+                  ],
+                  rows: [
+                    DataRow(
+                      cells: [
+                        DataCell(
+                          Icon(Icons.key),
+                        ),
+                        DataCell(
+                          Text('id'),
+                        ),
+                        DataCell(
+                          Text('TEXT'),
+                        ),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(
+                          const SizedBox.shrink(),
+                        ),
+                        DataCell(
+                          Text('name'),
+                        ),
+                        DataCell(
+                          Text('TEXT'),
+                        ),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(
+                          const SizedBox.shrink(),
+                        ),
+                        DataCell(
+                          Text('age'),
+                        ),
+                        DataCell(
+                          Text('INTEGER'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
