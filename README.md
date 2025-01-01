@@ -16,4 +16,5 @@ This project is built to help user learn SQLite through interactive Playground
 - Web platform support ✔
 - Fix ERD line relation bug
 - Implement business logic
+- Export ERD to image ✔
 
