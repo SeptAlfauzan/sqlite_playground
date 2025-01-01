@@ -1,8 +1,13 @@
-import 'dart:html' as html; // For web
-import 'dart:io';
-import 'package:path_provider/path_provider.dart'; // Add this package
-import 'package:file_picker/file_picker.dart'; // Add this package
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+// Web-specific imports
+import 'stub_native_image_saver.dart'
+    if (dart.library.io) 'native_image_saver.dart';
+
+// Mobile/Desktop specific imports
+import 'stub_web_image_saver.dart'
+    if (dart.library.html) 'web_image_saver.dart';
 
 class ImageSaver {
   static Future<void> saveImage(
@@ -10,45 +15,10 @@ class ImageSaver {
     fileName ??= 'erd_diagram_${DateTime.now().millisecondsSinceEpoch}.png';
 
     if (kIsWeb) {
-      // Web implementation
-      final blob = html.Blob([bytes]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.AnchorElement()
-        ..href = url
-        ..download = fileName;
-
-      // Trigger download
-      anchor.click();
-
-      // Clean up
-      html.Url.revokeObjectUrl(url);
+      await WebImageSaver.save(bytes, fileName);
     } else {
-      // Mobile and Desktop implementation
-      try {
-        String? outputPath;
-
-        if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-          // Desktop: Let user choose save location
-          outputPath = await FilePicker.platform.saveFile(
-            dialogTitle: 'Save ERD diagram',
-            fileName: fileName,
-            allowedExtensions: ['png'],
-            type: FileType.custom,
-          );
-        } else {
-          // Mobile: Save to app documents directory
-          final directory = await getApplicationDocumentsDirectory();
-          outputPath = '${directory.path}/$fileName';
-        }
-
-        if (outputPath == null) return; // User cancelled
-
-        // Save the file
-        final file = File(outputPath);
-        await file.writeAsBytes(bytes);
-      } catch (e) {
-        throw Exception('Failed to save image: $e');
-      }
+      print("download on mobile");
+      await NativeImageSaver.save(bytes, fileName);
     }
   }
 }

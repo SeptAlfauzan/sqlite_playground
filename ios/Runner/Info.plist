@@ -44,6 +44,8 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+  <true/>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>This app needs access to save images to your photo library</string>
 </dict>
 </plist>
