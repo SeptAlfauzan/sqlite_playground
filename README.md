@@ -11,6 +11,9 @@ This project is built to help user learn SQLite through interactive Playground
 - Retrieve all registered tables ✔
 - SQL query editor ✔
 - Visualization for a table ✔
-- Visualization for tables
-- Visualization for tables relations
+- Visualization for tables (UI) ✔
+- Visualization for tables relations (UI) ✔
 - Web platform support ✔
+- Fix ERD line relation bug
+- Implement business logic
+
