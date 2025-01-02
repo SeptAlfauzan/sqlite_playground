@@ -7,22 +7,22 @@ ThemeData getDarkTheme() {
     brightness: Brightness.dark,
     colorScheme: const ColorScheme.dark(
       // Primary colors
-      primary: Color(0xFF2196F3), // Blue
+      primary: AppColors.lime, // Blue
       onPrimary: AppColors.grey,
-      primaryContainer: Color(0xFF0D47A1), // Darker blue
-      onPrimaryContainer: AppColors.lime,
+      primaryContainer: AppColors.lime, // Darker blue
+      onPrimaryContainer: AppColors.grey,
 
       // Secondary colors
       secondary: Color(0xFF64B5F6), // Lighter blue
       onSecondary: Colors.black,
       secondaryContainer: Color(0xFF1976D2),
-      onSecondaryContainer: AppColors.lime,
+      onSecondaryContainer: AppColors.grey,
 
       // Tertiary colors
       tertiary: Color(0xFF81D4FA), // Even lighter blue
       onTertiary: Colors.black,
       tertiaryContainer: Color(0xFF0288D1),
-      onTertiaryContainer: AppColors.lime,
+      onTertiaryContainer: AppColors.grey,
 
       // Background colors
       surface: AppColors.black, // Slightly lighter than background
@@ -31,8 +31,8 @@ ThemeData getDarkTheme() {
       // Error colors
       error: AppColors.red, // Material dark error color
       onError: Colors.black,
-      errorContainer: Color(0xFFB00020),
-      onErrorContainer: AppColors.lime,
+      errorContainer: AppColors.darkerGrey,
+      onErrorContainer: AppColors.red,
     ),
 
     // Text Theme
@@ -40,67 +40,67 @@ ThemeData getDarkTheme() {
       displayLarge: TextStyle(
         fontSize: 57,
         fontWeight: FontWeight.w400,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       displayMedium: TextStyle(
         fontSize: 45,
         fontWeight: FontWeight.w400,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       displaySmall: TextStyle(
         fontSize: 36,
         fontWeight: FontWeight.w400,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       headlineLarge: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.w400,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       headlineMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w400,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       headlineSmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w400,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       titleLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w500,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.15,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       titleSmall: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.1,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.5,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.25,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
       bodySmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.4,
-        color: AppColors.lime,
+        color: AppColors.lightGrey,
       ),
     ),
 

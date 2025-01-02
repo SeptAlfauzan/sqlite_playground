@@ -51,7 +51,13 @@ class _EditorState extends State<Editor> {
           future: _highlighter,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return const Center(
+                child: SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
 
             if (snapshot.hasError) {
@@ -68,9 +74,6 @@ class _EditorState extends State<Editor> {
                   expands: true,
                   controller: _editorController,
                   style: TextStyle(
-                    height: 1.5,
-                    fontSize: 14,
-                    letterSpacing: 1,
                     fontFamily: 'monospace',
                     color: Colors.transparent,
                     shadows: [

@@ -74,71 +74,65 @@ class _PlaygroundViewState extends State<PlaygroundView> {
   Widget build(BuildContext context) {
     final screenHeightSize = WindowScreen().calculateScreenHeight(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Playground"),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                //Expanded(
-                //  child:
-                Editor(
-                  height: double.infinity,
-                  onUpdate: (query) {
-                    setState(
-                      () {
-                        _query = query;
-                      },
-                    );
-                  },
-                  //),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        foregroundColor: WidgetStateProperty.all(Colors.black),
-                        backgroundColor:
-                            WidgetStateProperty.all(AppColors.lime),
-                      ),
-                      onPressed: () async {
-                        await onPressRun();
-                      },
-                      child: const Text("Run"),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              //Expanded(
+              //  child:
+              Editor(
+                height: double.infinity,
+                onUpdate: (query) {
+                  setState(
+                    () {
+                      _query = query;
+                    },
+                  );
+                },
+                //),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: WidgetStateProperty.all(Colors.black),
+                      backgroundColor: WidgetStateProperty.all(AppColors.lime),
                     ),
+                    onPressed: () async {
+                      await onPressRun();
+                    },
+                    child: const Text("Run"),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Divider(
+          height: 1,
+          thickness: 0.4,
+          endIndent: 0,
+          color: Colors.grey,
+        ),
+        Container(
+            height: screenHeightSize == ScreenHeightSize.COMPACT ? 120 : 240,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const OutputTimeDevider(),
+                Expanded(
+                  child: Datatable(
+                    records: _userRecord,
                   ),
                 ),
               ],
-            ),
-          ),
-          const Divider(
-            height: 1,
-            thickness: 0.4,
-            endIndent: 0,
-            color: Colors.grey,
-          ),
-          Container(
-              height: screenHeightSize == ScreenHeightSize.COMPACT ? 120 : 240,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const OutputTimeDevider(),
-                  Expanded(
-                    child: Datatable(
-                      records: _userRecord,
-                    ),
-                  ),
-                ],
-              ))
-        ],
-      ),
+            ))
+      ],
     );
   }
 }
