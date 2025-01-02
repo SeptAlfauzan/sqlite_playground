@@ -72,6 +72,6 @@ class SQLite {
   }
 
   Future<dynamic> executeRawQuery(String query) async {
-    await SQLite._database?.rawQuery(query);
+    return await SQLite._database?.rawQuery(query);
   }
 }

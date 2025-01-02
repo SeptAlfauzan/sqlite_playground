@@ -29,8 +29,8 @@ ThemeData getDarkTheme() {
       onSurface: AppColors.grey,
 
       // Error colors
-      error: AppColors.red, // Material dark error color
-      onError: Colors.black,
+      error: AppColors.black, // Material dark error color
+      onError: AppColors.red,
       errorContainer: AppColors.darkerGrey,
       onErrorContainer: AppColors.red,
     ),
