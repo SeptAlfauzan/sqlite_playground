@@ -74,7 +74,10 @@ class _EditorState extends State<Editor> {
                   expands: true,
                   controller: _editorController,
                   style: TextStyle(
+                    letterSpacing: 1,
+                    height: 1.5,
                     fontFamily: 'monospace',
+                    fontSize: 14,
                     color: Colors.transparent,
                     shadows: [
                       Shadow(
