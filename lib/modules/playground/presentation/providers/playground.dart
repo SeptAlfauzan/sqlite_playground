@@ -16,7 +16,6 @@ class PlaygroundEditor extends _$PlaygroundEditor {
 
       final SQLite sqlite = ref.read(sqLiteProvider);
       final result = await sqlite.executeRawQuery(sql);
-
       print(result);
       state = EditorDto.success(result: result.toString());
     } catch (e) {

@@ -14,6 +14,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int activeIndex = 0;
   void updateActiveIndex(int index) {
     setState(() {
@@ -46,19 +47,44 @@ class _AppState extends State<App> {
     ];
 
     return Scaffold(
-      drawer: screenSize != ScreenWidthSize.COMPACT
-          ? SideBarNavigation(
-              items: items,
-              activeIndex: activeIndex,
-              updateActiveIndex: updateActiveIndex)
-          : null,
-      bottomNavigationBar: screenSize == ScreenWidthSize.COMPACT
-          ? BottomBarNavigation(
-              items: items,
-              activeIndex: activeIndex,
-              updateActiveIndex: updateActiveIndex)
-          : null,
-      body: items[activeIndex].screen,
-    );
+        key: _scaffoldKey,
+        appBar: AppBar(
+          // Only show drawer button when screen is NOT compact
+          leading: screenSize != ScreenWidthSize.COMPACT
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Colors.white10,
+                  ),
+                  onPressed: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                  },
+                )
+              : null,
+        ),
+        drawer: screenSize != ScreenWidthSize.COMPACT
+            ? SideBarNavigation(
+                items: items,
+                activeIndex: activeIndex,
+                updateActiveIndex: updateActiveIndex)
+            : null,
+        bottomNavigationBar: screenSize == ScreenWidthSize.COMPACT
+            ? BottomBarNavigation(
+                items: items,
+                activeIndex: activeIndex,
+                updateActiveIndex: updateActiveIndex)
+            : null,
+        body: Row(
+          children: [
+            if (screenSize != ScreenWidthSize.COMPACT)
+              SideBarNavigation(
+                  items: items,
+                  activeIndex: activeIndex,
+                  updateActiveIndex: updateActiveIndex),
+            Expanded(
+              child: items[activeIndex].screen,
+            )
+          ],
+        ));
   }
 }

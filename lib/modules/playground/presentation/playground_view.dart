@@ -19,7 +19,6 @@ class PlaygroundView extends ConsumerStatefulWidget {
 
 class _PlaygroundViewState extends ConsumerState<PlaygroundView> {
   String _query = '';
-
   @override
   Widget build(BuildContext context) {
     final screenHeightSize = WindowScreen().calculateScreenHeight(context);
