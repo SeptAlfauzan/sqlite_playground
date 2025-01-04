@@ -6,7 +6,7 @@ part of 'playground.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playgroundEditorHash() => r'9f5344b6453543dedcbb8ab7b0a98df0ecfd25f7';
+String _$playgroundEditorHash() => r'de70644a0756b51a2993d7bc12b9d5e62e0e3bb3';
 
 /// See also [PlaygroundEditor].
 @ProviderFor(PlaygroundEditor)

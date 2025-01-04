@@ -104,7 +104,7 @@ CREATE TABLE user_profiles (
       };
     }
     final jsonData = jsonEncode(mapData);
-    print(jsonData);
+    // print(jsonData);
     return mapData;
   }
 

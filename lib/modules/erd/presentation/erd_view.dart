@@ -11,6 +11,8 @@ import 'package:sql_playground/modules/erd/presentation/widgets/atoms/erd_table.
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/line_connector.dart';
 import 'dart:ui' as ui;
 
+import 'package:sql_playground/ui/colors.dart';
+
 class ErdView extends ConsumerStatefulWidget {
   const ErdView({super.key});
 
@@ -123,23 +125,20 @@ class _ErdViewState extends ConsumerState<ErdView> {
       body: RepaintBoundary(
         key: _repaintBoundary,
         child: GestureDetector(
-          onTapDown: (_) {
-            print("tapped");
-            setState(() {
-              _touched = true;
-            });
-          },
-          onTapUp: (_) {
-            setState(() {
-              _touched = false;
-            });
-          },
+          // onTapDown: (_) {
+          //   setState(() {
+          //     _touched = true;
+          //   });
+          // },
+          // onTapUp: (_) {
+          //   setState(() {
+          //     _touched = false;
+          //   });
+          // },
           onPanUpdate: (drag) {
             // if (!_touched) return;
             final deltaX = drag.delta.dx;
             final deltaY = drag.delta.dy;
-
-            print(deltaY);
 
             setState(() {
               _containerY += deltaY;
@@ -252,15 +251,21 @@ class GloballyTranslateStackedWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: children
-          .map(
-            (child) => Transform.translate(
-              offset: offset,
-              child: child,
-            ),
-          )
-          .toList(),
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(),
+      width: double.infinity,
+      height: double.infinity,
+      child: Stack(
+        children: children
+            .map(
+              (child) => Transform.translate(
+                offset: offset,
+                child: child,
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
