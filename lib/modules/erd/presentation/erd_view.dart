@@ -3,19 +3,22 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sql_playground/helper/image_saver.dart';
+import 'package:sql_playground/modules/erd/domain/dto/erd_visualizator_dto.dart';
+import 'package:sql_playground/modules/erd/presentation/providers/erd_visualizator.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/erd_table.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/line_connector.dart';
 import 'dart:ui' as ui;
 
-class ErdView extends StatefulWidget {
+class ErdView extends ConsumerStatefulWidget {
   const ErdView({super.key});
 
   @override
-  State<ErdView> createState() => _ErdViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ErdViewState();
 }
 
-class _ErdViewState extends State<ErdView> {
+class _ErdViewState extends ConsumerState<ErdView> {
   GlobalKey _erdContainerKey = GlobalKey();
   GlobalKey _repaintBoundary = GlobalKey();
   Offset startPoint = const Offset(0, 0);
@@ -23,11 +26,12 @@ class _ErdViewState extends State<ErdView> {
   double _containerX = 0;
   double _containerY = 0;
   bool _touched = false;
-  Size _widgetSize = Size(0, 0);
+  Size _widgetSize = const Size(0, 0);
   double _containerScale = 1.0;
+  List<Size> erdTablesSize = [];
 
   void getWidgetSize() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_erdContainerKey.currentContext == null) return;
       final box =
           _erdContainerKey.currentContext!.findRenderObject() as RenderBox;
@@ -61,13 +65,18 @@ class _ErdViewState extends State<ErdView> {
   @override
   void initState() {
     getWidgetSize();
+    Future.microtask(() async {
+      await ref
+          .read<ErdVisualizator>(erdVisualizatorProvider.notifier)
+          .getTablesInfo();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    print((-1 - _containerScale));
+    final erdisualizatorState =
+        ref.watch<ErdVisualizatorDto>(erdVisualizatorProvider);
 
     return Scaffold(
       floatingActionButton: Column(
@@ -115,6 +124,7 @@ class _ErdViewState extends State<ErdView> {
         key: _repaintBoundary,
         child: GestureDetector(
           onTapDown: (_) {
+            print("tapped");
             setState(() {
               _touched = true;
             });
@@ -125,9 +135,11 @@ class _ErdViewState extends State<ErdView> {
             });
           },
           onPanUpdate: (drag) {
-            if (!_touched) return;
+            // if (!_touched) return;
             final deltaX = drag.delta.dx;
             final deltaY = drag.delta.dy;
+
+            print(deltaY);
 
             setState(() {
               _containerY += deltaY;
@@ -136,43 +148,91 @@ class _ErdViewState extends State<ErdView> {
           },
           child: Transform.scale(
             scale: _containerScale,
-            child: GloballyTranslateStackedWidgets(
-              key: _erdContainerKey,
-              //need to mulply with _containerScale to match with current container scale
-              offset: Offset(_containerX * (_containerScale),
-                  _containerY * (_containerScale)),
-              children: [
-                CustomPaint(
-                  painter: LineConnector(
-                    startPoint: startPoint,
-                    destPoint: destPoint,
-                    onErrorDraw: (error) {
-                      print(error);
-                    },
-                  ),
-                  child: Container(),
+            child: erdisualizatorState.when(
+              initial: () => const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(),
                 ),
-                ErdTable(
-                  useCenterOfTableUpdateLocation: true,
-                  initialXpos: 0,
-                  initialYpos: 0,
-                  onDragUpdate: (offset) {
-                    setState(() {
-                      startPoint = offset;
-                    });
-                  },
+              ),
+              loading: () => const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(),
                 ),
-                ErdTable(
-                  useCenterOfTableUpdateLocation: true,
-                  initialXpos: 0,
-                  initialYpos: 0,
-                  onDragUpdate: (offset) {
-                    setState(() {
-                      destPoint = offset;
-                    });
-                  },
-                ),
-              ],
+              ),
+              success: (data) => GloballyTranslateStackedWidgets(
+                key: _erdContainerKey,
+                //need to mulply with _containerScale to match with current container scale
+                offset: Offset(_containerX, _containerY),
+                children: data.tables.isEmpty
+                    ? []
+                    : [
+                        ...data.tables
+                            .asMap()
+                            .map((index, tableInfo) {
+                              // print(erdTablesSize);
+                              return MapEntry(
+                                index,
+                                ErdTable(
+                                  // key: Key(index.toString()),
+                                  tableInfo: tableInfo,
+                                  useCenterOfTableUpdateLocation: true,
+                                  initialXpos: index * 300,
+                                  initialYpos: 0,
+                                  // onLoadBoxSize: (size) {
+                                  //   if (mounted) {
+                                  //     // Check if widget is still mounted
+                                  //     setState(() {
+                                  //       erdTablesSize.add(size);
+                                  //     });
+                                  //   }
+                                  // },
+                                  onDragUpdate: (offset) {
+                                    setState(() {
+                                      startPoint = offset;
+                                    });
+                                  },
+                                ),
+                              );
+                            })
+                            .values
+                            .toList()
+                        // CustomPaint(
+                        //   painter: LineConnector(
+                        //     startPoint: startPoint,
+                        //     destPoint: destPoint,
+                        //     onErrorDraw: (error) {
+                        //       print(error);
+                        //     },
+                        //   ),
+                        //   child: Container(),
+                        // ),
+                        // ErdTable(
+                        //   useCenterOfTableUpdateLocation: true,
+                        //   initialXpos: 0,
+                        //   initialYpos: 0,
+                        //   onDragUpdate: (offset) {
+                        //     setState(() {
+                        //       startPoint = offset;
+                        //     });
+                        //   },
+                        // ),
+                        // ErdTable(
+                        //   useCenterOfTableUpdateLocation: true,
+                        //   initialXpos: 0,
+                        //   initialYpos: 0,
+                        //   onDragUpdate: (offset) {
+                        //     setState(() {
+                        //       destPoint = offset;
+                        //     });
+                        //   },
+                        // ),
+                      ],
+              ),
+              fail: (error) => Text(error),
             ),
           ),
         ),

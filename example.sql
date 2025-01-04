@@ -1,0 +1,14 @@
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE user_profiles (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER UNIQUE,
+  address TEXT,
+  phone TEXT,
+  FOREIGN KEY (user_id) 
+  REFERENCES users (id) 
+  ON DELETE CASCADE
+)

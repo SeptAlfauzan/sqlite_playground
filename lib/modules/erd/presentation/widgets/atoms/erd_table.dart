@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sql_playground/modules/erd/domain/dto/database_schema.dart';
 import 'package:sql_playground/ui/colors.dart';
 
 class ErdTable extends StatefulWidget {
@@ -6,11 +7,16 @@ class ErdTable extends StatefulWidget {
   final double initialYpos;
   final Function(Offset offset)? onDragUpdate;
   final bool useCenterOfTableUpdateLocation;
+  final TableInfo tableInfo;
+
+  final Function(Size size)? onLoadBoxSize;
   const ErdTable({
     super.key,
+    required this.tableInfo,
     required this.initialXpos,
     required this.initialYpos,
     this.onDragUpdate,
+    this.onLoadBoxSize,
     this.useCenterOfTableUpdateLocation = false,
   });
 
@@ -42,6 +48,9 @@ class _ErdTableState extends State<ErdTable> {
       setState(() {
         _widgetSize = box.size;
       });
+      if (widget.onLoadBoxSize != null) {
+        widget.onLoadBoxSize!(box.size);
+      }
     });
   }
 
@@ -101,7 +110,7 @@ class _ErdTableState extends State<ErdTable> {
                       const SizedBox(
                         width: 32,
                       ),
-                      Text("Table Name"),
+                      Text(widget.tableInfo.tableName),
                     ],
                   ),
                 ),
@@ -114,44 +123,22 @@ class _ErdTableState extends State<ErdTable> {
                       DataColumn(label: Text('DataType')),
                     ],
                     rows: [
-                      DataRow(
-                        cells: [
-                          DataCell(
-                            Icon(Icons.key),
-                          ),
-                          DataCell(
-                            Text('id'),
-                          ),
-                          DataCell(
-                            Text('TEXT'),
-                          ),
-                        ],
-                      ),
-                      DataRow(
-                        cells: [
-                          DataCell(
-                            const SizedBox.shrink(),
-                          ),
-                          DataCell(
-                            Text('name'),
-                          ),
-                          DataCell(
-                            Text('TEXT'),
-                          ),
-                        ],
-                      ),
-                      DataRow(
-                        cells: [
-                          DataCell(
-                            const SizedBox.shrink(),
-                          ),
-                          DataCell(
-                            Text('age'),
-                          ),
-                          DataCell(
-                            Text('INTEGER'),
-                          ),
-                        ],
+                      ...widget.tableInfo.columns.map(
+                        (column) => DataRow(
+                          cells: [
+                            DataCell(
+                              column.primaryKey == 1
+                                  ? const Icon(Icons.key)
+                                  : const SizedBox.shrink(),
+                            ),
+                            DataCell(
+                              Text(column.name),
+                            ),
+                            DataCell(
+                              Text(column.type),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

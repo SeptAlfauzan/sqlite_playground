@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+import 'package:sql_playground/modules/erd/domain/dto/database_schema.dart';
 
 class SQLite {
   static final SQLite _instance = SQLite._internal();
@@ -21,20 +23,27 @@ class SQLite {
   }
 
   Future<Database> _initDatabase() async {
-    const sqlUser = '''
-        CREATE TABLE users (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          email TEXT NOT NULL
-        )
-      ''';
+    const sql = '''
+CREATE TABLE educations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  address TEXT NOT NULL
+);
 
-    const sqlEducation = '''
-        CREATE TABLE educations (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          address TEXT NOT NULL
-        )
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE user_profiles (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER UNIQUE,
+  address TEXT,
+  phone TEXT,
+  FOREIGN KEY (user_id) 
+  REFERENCES users (id) 
+  ON DELETE CASCADE
+)
     ''';
 
     if (kIsWeb) {
@@ -42,8 +51,7 @@ class SQLite {
       final databaseFactory = databaseFactoryFfiWeb;
       final db = await databaseFactory.openDatabase(inMemoryDatabasePath);
 
-      await db.execute(sqlUser);
-      await db.execute(sqlEducation);
+      await db.execute(sql);
 
       return db;
     } else if (Platform.isWindows || Platform.isMacOS) {
@@ -51,15 +59,12 @@ class SQLite {
       final databaseFactory = databaseFactoryFfi;
       final db = await databaseFactory.openDatabase(inMemoryDatabasePath);
 
-      await db.execute(sqlUser);
-      await db.execute(sqlEducation);
-
+      await db.execute(sql);
       return db;
     } else {
       return await openDatabase(':memory:', version: 1,
           onCreate: (Database db, int version) async {
-        await db.execute(sqlUser);
-        await db.execute(sqlEducation);
+        await db.execute(sql);
       });
     }
   }
@@ -80,6 +85,27 @@ class SQLite {
         .map((table) =>
             (table['name'] ?? table['tbl_name'] ?? 'no_name').toString())
         .toList();
+  }
+
+  Future<Map<String, dynamic>> getTablesInfo() async {
+    final db = await database;
+    final tablesName = await getTablesName();
+    final Map<String, dynamic> mapData = {};
+
+    for (var i = 0; i < tablesName.length; i++) {
+      final foreignKeys =
+          await db.rawQuery('PRAGMA foreign_key_list(${tablesName[i]})');
+      final tableInfo =
+          await db.rawQuery('PRAGMA table_info(${tablesName[i]})');
+
+      mapData[tablesName[i]] = {
+        'table_info': tableInfo,
+        'foreign_keys': foreignKeys
+      };
+    }
+    final jsonData = jsonEncode(mapData);
+    print(jsonData);
+    return mapData;
   }
 
   bool _isSelectQuery(String query) {
@@ -116,8 +142,10 @@ class SQLite {
       return await db.rawUpdate(query);
     } else if (_isInsertQuery(query.toUpperCase())) {
       return await db.rawInsert(query);
+    } else {
+      final result = await db.rawQuery(query);
+      print(result);
+      return "Query succesfully executed!";
     }
-
-    throw Exception("Query is not supported");
   }
 }
