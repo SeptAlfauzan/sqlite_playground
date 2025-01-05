@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sql_playground/modules/erd/domain/dto/erd_visualizator_dto.dart';
 import 'package:sql_playground/modules/erd/domain/dto/position.dart';
 import 'package:sql_playground/modules/erd/presentation/providers/erd_actions.dart';
+import 'package:sql_playground/modules/erd/presentation/providers/erd_line_connector.dart';
 import 'package:sql_playground/modules/erd/presentation/providers/erd_visualizator.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/erd_table.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/line_connector.dart';
@@ -58,6 +59,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
   Widget build(BuildContext context) {
     final erdisualizatorState =
         ref.watch<ErdVisualizatorDto>(erdVisualizatorProvider);
+    final erdLineConnectorState = ref.watch(erdLineConnectorProvider);
 
     return Scaffold(
       floatingActionButton: Column(
@@ -154,6 +156,24 @@ class _ErdViewState extends ConsumerState<ErdView> {
                 children: data.tables.isEmpty
                     ? []
                     : [
+                        //line connector
+                        ...erdLineConnectorState
+                            .map(
+                              (line) => CustomPaint(
+                                painter: LineConnector(
+                                  startPoint: Offset(line.firstEntityPos.x,
+                                      line.firstEntityPos.y),
+                                  destPoint: Offset(line.secondEntityPos.x,
+                                      line.secondEntityPos.y),
+                                  onErrorDraw: (error) {
+                                    print(error);
+                                  },
+                                ),
+                                child: Container(),
+                              ),
+                            )
+                            .toList(),
+                        //table erd
                         ...data.tables
                             .asMap()
                             .map((index, tableInfo) {
@@ -175,9 +195,21 @@ class _ErdViewState extends ConsumerState<ErdView> {
                                   //   }
                                   // },
                                   onDragUpdate: (offset) {
-                                    setState(() {
-                                      startPoint = offset;
-                                    });
+                                    setState(
+                                      () {
+                                        startPoint = offset;
+                                        ref
+                                            .read(erdLineConnectorProvider
+                                                .notifier)
+                                            .updateLineConnectorPosition(
+                                              entityName: tableInfo.tableName,
+                                              entityPosition: Position(
+                                                x: offset.dx,
+                                                y: offset.dy,
+                                              ),
+                                            );
+                                      },
+                                    );
                                   },
                                 ),
                               );

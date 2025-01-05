@@ -59,6 +59,7 @@ class ForeignKeyInfo with _$ForeignKeyInfo {
     required int seq,
     required String table,
     @JsonKey(name: 'from') required String fromColumn,
+    @JsonKey(name: 'from_table') required String fromTable,
     @JsonKey(name: 'to') required String toColumn,
     @JsonKey(name: 'on_update') required String onUpdate,
     @JsonKey(name: 'on_delete') required String onDelete,

@@ -48,6 +48,7 @@ class _ErdTableState extends State<ErdTable> {
       setState(() {
         _widgetSize = box.size;
       });
+
       if (widget.onLoadBoxSize != null) {
         widget.onLoadBoxSize!(box.size);
       }

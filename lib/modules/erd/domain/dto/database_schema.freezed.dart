@@ -649,6 +649,8 @@ mixin _$ForeignKeyInfo {
   String get table => throw _privateConstructorUsedError;
   @JsonKey(name: 'from')
   String get fromColumn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'from_table')
+  String get fromTable => throw _privateConstructorUsedError;
   @JsonKey(name: 'to')
   String get toColumn => throw _privateConstructorUsedError;
   @JsonKey(name: 'on_update')
@@ -678,6 +680,7 @@ abstract class $ForeignKeyInfoCopyWith<$Res> {
       int seq,
       String table,
       @JsonKey(name: 'from') String fromColumn,
+      @JsonKey(name: 'from_table') String fromTable,
       @JsonKey(name: 'to') String toColumn,
       @JsonKey(name: 'on_update') String onUpdate,
       @JsonKey(name: 'on_delete') String onDelete,
@@ -703,6 +706,7 @@ class _$ForeignKeyInfoCopyWithImpl<$Res, $Val extends ForeignKeyInfo>
     Object? seq = null,
     Object? table = null,
     Object? fromColumn = null,
+    Object? fromTable = null,
     Object? toColumn = null,
     Object? onUpdate = null,
     Object? onDelete = null,
@@ -724,6 +728,10 @@ class _$ForeignKeyInfoCopyWithImpl<$Res, $Val extends ForeignKeyInfo>
       fromColumn: null == fromColumn
           ? _value.fromColumn
           : fromColumn // ignore: cast_nullable_to_non_nullable
+              as String,
+      fromTable: null == fromTable
+          ? _value.fromTable
+          : fromTable // ignore: cast_nullable_to_non_nullable
               as String,
       toColumn: null == toColumn
           ? _value.toColumn
@@ -758,6 +766,7 @@ abstract class _$$ForeignKeyInfoImplCopyWith<$Res>
       int seq,
       String table,
       @JsonKey(name: 'from') String fromColumn,
+      @JsonKey(name: 'from_table') String fromTable,
       @JsonKey(name: 'to') String toColumn,
       @JsonKey(name: 'on_update') String onUpdate,
       @JsonKey(name: 'on_delete') String onDelete,
@@ -781,6 +790,7 @@ class __$$ForeignKeyInfoImplCopyWithImpl<$Res>
     Object? seq = null,
     Object? table = null,
     Object? fromColumn = null,
+    Object? fromTable = null,
     Object? toColumn = null,
     Object? onUpdate = null,
     Object? onDelete = null,
@@ -802,6 +812,10 @@ class __$$ForeignKeyInfoImplCopyWithImpl<$Res>
       fromColumn: null == fromColumn
           ? _value.fromColumn
           : fromColumn // ignore: cast_nullable_to_non_nullable
+              as String,
+      fromTable: null == fromTable
+          ? _value.fromTable
+          : fromTable // ignore: cast_nullable_to_non_nullable
               as String,
       toColumn: null == toColumn
           ? _value.toColumn
@@ -831,6 +845,7 @@ class _$ForeignKeyInfoImpl implements _ForeignKeyInfo {
       required this.seq,
       required this.table,
       @JsonKey(name: 'from') required this.fromColumn,
+      @JsonKey(name: 'from_table') required this.fromTable,
       @JsonKey(name: 'to') required this.toColumn,
       @JsonKey(name: 'on_update') required this.onUpdate,
       @JsonKey(name: 'on_delete') required this.onDelete,
@@ -849,6 +864,9 @@ class _$ForeignKeyInfoImpl implements _ForeignKeyInfo {
   @JsonKey(name: 'from')
   final String fromColumn;
   @override
+  @JsonKey(name: 'from_table')
+  final String fromTable;
+  @override
   @JsonKey(name: 'to')
   final String toColumn;
   @override
@@ -862,7 +880,7 @@ class _$ForeignKeyInfoImpl implements _ForeignKeyInfo {
 
   @override
   String toString() {
-    return 'ForeignKeyInfo(id: $id, seq: $seq, table: $table, fromColumn: $fromColumn, toColumn: $toColumn, onUpdate: $onUpdate, onDelete: $onDelete, match: $match)';
+    return 'ForeignKeyInfo(id: $id, seq: $seq, table: $table, fromColumn: $fromColumn, fromTable: $fromTable, toColumn: $toColumn, onUpdate: $onUpdate, onDelete: $onDelete, match: $match)';
   }
 
   @override
@@ -875,6 +893,8 @@ class _$ForeignKeyInfoImpl implements _ForeignKeyInfo {
             (identical(other.table, table) || other.table == table) &&
             (identical(other.fromColumn, fromColumn) ||
                 other.fromColumn == fromColumn) &&
+            (identical(other.fromTable, fromTable) ||
+                other.fromTable == fromTable) &&
             (identical(other.toColumn, toColumn) ||
                 other.toColumn == toColumn) &&
             (identical(other.onUpdate, onUpdate) ||
@@ -887,7 +907,7 @@ class _$ForeignKeyInfoImpl implements _ForeignKeyInfo {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, seq, table, fromColumn,
-      toColumn, onUpdate, onDelete, match);
+      fromTable, toColumn, onUpdate, onDelete, match);
 
   /// Create a copy of ForeignKeyInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -912,6 +932,7 @@ abstract class _ForeignKeyInfo implements ForeignKeyInfo {
       required final int seq,
       required final String table,
       @JsonKey(name: 'from') required final String fromColumn,
+      @JsonKey(name: 'from_table') required final String fromTable,
       @JsonKey(name: 'to') required final String toColumn,
       @JsonKey(name: 'on_update') required final String onUpdate,
       @JsonKey(name: 'on_delete') required final String onDelete,
@@ -929,6 +950,9 @@ abstract class _ForeignKeyInfo implements ForeignKeyInfo {
   @override
   @JsonKey(name: 'from')
   String get fromColumn;
+  @override
+  @JsonKey(name: 'from_table')
+  String get fromTable;
   @override
   @JsonKey(name: 'to')
   String get toColumn;

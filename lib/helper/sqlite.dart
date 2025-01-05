@@ -35,14 +35,19 @@ CREATE TABLE users (
   name TEXT NOT NULL
 );
 
+CREATE TABLE images(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  url TEXT
+);
+
 CREATE TABLE user_profiles (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER UNIQUE,
+  image_id INTEGER,
   address TEXT,
   phone TEXT,
-  FOREIGN KEY (user_id) 
-  REFERENCES users (id) 
-  ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  FOREIGN KEY (image_id) REFERENCES images (id) ON DELETE CASCADE
 )
     ''';
 
@@ -94,7 +99,10 @@ CREATE TABLE user_profiles (
 
     for (var i = 0; i < tablesName.length; i++) {
       final foreignKeys =
-          await db.rawQuery('PRAGMA foreign_key_list(${tablesName[i]})');
+          (await db.rawQuery('PRAGMA foreign_key_list(${tablesName[i]})'))
+              .map((fk) {
+        return {...fk, 'from_table': tablesName[i]};
+      }).toList();
       final tableInfo =
           await db.rawQuery('PRAGMA table_info(${tablesName[i]})');
 
@@ -104,7 +112,6 @@ CREATE TABLE user_profiles (
       };
     }
     final jsonData = jsonEncode(mapData);
-    // print(jsonData);
     return mapData;
   }
 
