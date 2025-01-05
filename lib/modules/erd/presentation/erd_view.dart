@@ -4,8 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sql_playground/helper/image_saver.dart';
 import 'package:sql_playground/modules/erd/domain/dto/erd_visualizator_dto.dart';
+import 'package:sql_playground/modules/erd/domain/dto/position.dart';
+import 'package:sql_playground/modules/erd/presentation/providers/erd_actions.dart';
 import 'package:sql_playground/modules/erd/presentation/providers/erd_visualizator.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/erd_table.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/line_connector.dart';
@@ -27,9 +28,8 @@ class _ErdViewState extends ConsumerState<ErdView> {
   Offset destPoint = const Offset(0, 0);
   double _containerX = 0;
   double _containerY = 0;
-  bool _touched = false;
   Size _widgetSize = const Size(0, 0);
-  double _containerScale = 1.0;
+  double _containerScale = 1;
   List<Size> erdTablesSize = [];
 
   void getWidgetSize() {
@@ -41,27 +41,6 @@ class _ErdViewState extends ConsumerState<ErdView> {
         _widgetSize = box.size;
       });
     });
-  }
-
-  void moveToCenterContainer() {
-    setState(() {
-      _containerY = _widgetSize.height / 2;
-      _containerX = _widgetSize.width / 2;
-    });
-  }
-
-  Future<Uint8List> exportToImgBytes() async {
-    RenderRepaintBoundary boundary = _repaintBoundary.currentContext!
-        .findRenderObject() as RenderRepaintBoundary;
-
-    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-
-    if (byteData == null) throw Exception('Byte data is null');
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    final bs64 = base64Encode(pngBytes);
-
-    return pngBytes;
   }
 
   @override
@@ -103,7 +82,15 @@ class _ErdViewState extends ConsumerState<ErdView> {
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
-            onPressed: moveToCenterContainer,
+            onPressed: () {
+              final Position position = ref
+                  .read(erdActionsProvider.notifier)
+                  .moveToCenterContainer(widgetSize: _widgetSize);
+              setState(() {
+                _containerY = position.y;
+                _containerX = position.x;
+              });
+            },
             child: Icon(Icons.center_focus_strong_outlined),
           ),
           const SizedBox(height: 8),
@@ -111,8 +98,17 @@ class _ErdViewState extends ConsumerState<ErdView> {
             onPressed: () {
               Future.microtask(() async {
                 try {
-                  final bytes = await exportToImgBytes();
-                  await ImageSaver.saveImage(bytes: bytes);
+                  final renderObject =
+                      _repaintBoundary.currentContext?.findRenderObject();
+
+                  if (renderObject == null) return;
+
+                  RenderRepaintBoundary boundary =
+                      renderObject as RenderRepaintBoundary;
+
+                  await ref
+                      .read(erdActionsProvider.notifier)
+                      .saveERD(boundary: boundary);
                 } catch (e) {
                   print(e);
                 }
@@ -125,18 +121,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
       body: RepaintBoundary(
         key: _repaintBoundary,
         child: GestureDetector(
-          // onTapDown: (_) {
-          //   setState(() {
-          //     _touched = true;
-          //   });
-          // },
-          // onTapUp: (_) {
-          //   setState(() {
-          //     _touched = false;
-          //   });
-          // },
           onPanUpdate: (drag) {
-            // if (!_touched) return;
             final deltaX = drag.delta.dx;
             final deltaY = drag.delta.dy;
 
