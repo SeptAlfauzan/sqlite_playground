@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -11,9 +9,7 @@ import 'package:sql_playground/modules/erd/presentation/providers/erd_line_conne
 import 'package:sql_playground/modules/erd/presentation/providers/erd_visualizator.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/erd_table.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/line_connector.dart';
-import 'dart:ui' as ui;
 
-import 'package:sql_playground/ui/colors.dart';
 
 class ErdView extends ConsumerStatefulWidget {
   const ErdView({super.key});
@@ -23,8 +19,8 @@ class ErdView extends ConsumerStatefulWidget {
 }
 
 class _ErdViewState extends ConsumerState<ErdView> {
-  GlobalKey _erdContainerKey = GlobalKey();
-  GlobalKey _repaintBoundary = GlobalKey();
+  final GlobalKey _erdContainerKey = GlobalKey();
+  final GlobalKey _repaintBoundary = GlobalKey();
   Offset startPoint = const Offset(0, 0);
   Offset destPoint = const Offset(0, 0);
   double _containerX = 0;
@@ -71,7 +67,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
                 _containerScale += 0.1;
               });
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
@@ -80,7 +76,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
                 _containerScale -= 0.1;
               });
             },
-            child: Icon(Icons.remove),
+            child: const Icon(Icons.remove),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
@@ -93,7 +89,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
                 _containerX = position.x;
               });
             },
-            child: Icon(Icons.center_focus_strong_outlined),
+            child: const Icon(Icons.center_focus_strong_outlined),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
@@ -116,7 +112,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
                 }
               });
             },
-            child: Icon(Icons.download),
+            child: const Icon(Icons.download),
           )
         ],
       ),
@@ -172,7 +168,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
                                 child: Container(),
                               ),
                             )
-                            .toList(),
+                            ,
                         //table erd
                         ...data.tables
                             .asMap()
@@ -215,7 +211,7 @@ class _ErdViewState extends ConsumerState<ErdView> {
                               );
                             })
                             .values
-                            .toList()
+                            
                         // CustomPaint(
                         //   painter: LineConnector(
                         //     startPoint: startPoint,

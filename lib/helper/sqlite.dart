@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
-import 'package:sql_playground/modules/erd/domain/dto/database_schema.dart';
 
 class SQLite {
   static final SQLite _instance = SQLite._internal();

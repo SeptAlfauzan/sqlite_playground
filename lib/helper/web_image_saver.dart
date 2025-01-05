@@ -3,7 +3,6 @@ import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sql_playground/ui/colors.dart';
 
 class WebImageSaver {
   static Future<void> save(Uint8List bytes, String fileName) async {

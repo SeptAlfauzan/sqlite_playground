@@ -73,7 +73,7 @@ class _EditorState extends State<Editor> {
                 TextField(
                   expands: true,
                   controller: _editorController,
-                  style: TextStyle(
+                  style: const TextStyle(
                     letterSpacing: 1,
                     height: 1.5,
                     fontFamily: 'monospace',

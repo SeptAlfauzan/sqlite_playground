@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sql_playground/common/domain/dto/message.dart';

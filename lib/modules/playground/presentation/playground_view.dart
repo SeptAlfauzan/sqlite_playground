@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sql_playground/helper/sqlite.dart';
 import 'package:sql_playground/modules/playground/presentation/providers/playground.dart';
-import 'package:sql_playground/modules/playground/presentation/widgets/atoms/datatable.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/output_time_devider.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/organism/editor.dart';
 import 'package:sql_playground/ui/colors.dart';
@@ -81,8 +79,8 @@ class _PlaygroundViewState extends ConsumerState<PlaygroundView> {
                   child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: playgroundEditorState.when(
-                  initial: () => SizedBox.shrink(),
-                  loading: () => CircularProgressIndicator(),
+                  initial: () => const SizedBox.shrink(),
+                  loading: () => const CircularProgressIndicator(),
                   success: (data) => Text(data),
                   fail: (error) => Text(error,
                       style:

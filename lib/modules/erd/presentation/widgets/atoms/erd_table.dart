@@ -29,7 +29,7 @@ class _ErdTableState extends State<ErdTable> {
   bool _touched = false;
   double _xPos = 0;
   double _yPos = 0;
-  Size _widgetSize = Size(0, 0);
+  Size _widgetSize = const Size(0, 0);
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _ErdTableState extends State<ErdTable> {
   }
 
   void getWidgetSize() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_key.currentContext == null) return;
       final box = _key.currentContext!.findRenderObject() as RenderBox;
       setState(() {
@@ -95,7 +95,7 @@ class _ErdTableState extends State<ErdTable> {
           child: Container(
             key: _key,
             clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: AppColors.grey,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadiusDirectional.all(Radius.circular(8))),
@@ -104,10 +104,10 @@ class _ErdTableState extends State<ErdTable> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: Row(
                     children: [
-                      Icon(Icons.table_view),
+                      const Icon(Icons.table_view),
                       const SizedBox(
                         width: 32,
                       ),
@@ -118,7 +118,7 @@ class _ErdTableState extends State<ErdTable> {
                 Container(
                   color: AppColors.darkerGrey,
                   child: DataTable(
-                    columns: [
+                    columns: const [
                       DataColumn(label: Text('PK')),
                       DataColumn(label: Text('Column')),
                       DataColumn(label: Text('DataType')),

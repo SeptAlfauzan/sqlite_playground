@@ -20,7 +20,7 @@ class _DatatableState extends State<Datatable> {
         ? Container(
             width: double.infinity,
           )
-        : Container(
+        : SizedBox(
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
