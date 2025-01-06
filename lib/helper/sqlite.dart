@@ -22,40 +22,37 @@ class SQLite {
   }
 
   Future<Database> _initDatabase() async {
-    const sql = '''
-CREATE TABLE educations (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  address TEXT NOT NULL
-);
-
-CREATE TABLE users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL
-);
-
-CREATE TABLE images(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  url TEXT
-);
-
-CREATE TABLE user_profiles (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER UNIQUE,
-  image_id INTEGER,
-  address TEXT,
-  phone TEXT,
-  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-  FOREIGN KEY (image_id) REFERENCES images (id) ON DELETE CASCADE
-)
-    ''';
-
+    final tablesSql = [
+      '''CREATE TABLE educations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      address TEXT NOT NULL
+    )''',
+      '''CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )''',
+      '''CREATE TABLE images(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      url TEXT
+    )''',
+      '''CREATE TABLE user_profiles (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER UNIQUE,
+      image_id INTEGER,
+      address TEXT,
+      phone TEXT,
+      FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+      FOREIGN KEY (image_id) REFERENCES images (id) ON DELETE CASCADE
+    )'''
+    ];
     if (kIsWeb) {
       sqfliteFfiInit();
       final databaseFactory = databaseFactoryFfiWeb;
       final db = await databaseFactory.openDatabase(inMemoryDatabasePath);
-
-      await db.execute(sql);
+      for (var sql in tablesSql) {
+        await db.execute(sql);
+      }
 
       return db;
     } else if (Platform.isWindows || Platform.isMacOS) {
@@ -63,12 +60,16 @@ CREATE TABLE user_profiles (
       final databaseFactory = databaseFactoryFfi;
       final db = await databaseFactory.openDatabase(inMemoryDatabasePath);
 
-      await db.execute(sql);
+      for (var sql in tablesSql) {
+        await db.execute(sql);
+      }
       return db;
     } else {
       return await openDatabase(':memory:', version: 1,
           onCreate: (Database db, int version) async {
-        await db.execute(sql);
+        for (var sql in tablesSql) {
+          await db.execute(sql);
+        }
       });
     }
   }
