@@ -16,7 +16,6 @@ class BottomBarNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationBar(
       onDestinationSelected: updateActiveIndex,
-      indicatorColor: Colors.amber,
       selectedIndex: activeIndex,
       destinations: <Widget>[
         ...items.map((item) => NavigationDestination(

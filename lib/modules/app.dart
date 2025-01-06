@@ -48,26 +48,28 @@ class _AppState extends State<App> {
     ];
 
     return Scaffold(
-        key: _scaffoldKey,
-        bottomNavigationBar: screenSize == ScreenWidthSize.COMPACT
-            ? BottomBarNavigation(
+      key: _scaffoldKey,
+      bottomNavigationBar: screenSize == ScreenWidthSize.COMPACT
+          ? BottomBarNavigation(
+              items: items,
+              activeIndex: activeIndex,
+              updateActiveIndex: updateActiveIndex)
+          : null,
+      body: Row(
+        children: [
+          if (screenSize != ScreenWidthSize.COMPACT)
+            SideBarNavigation(
                 items: items,
                 activeIndex: activeIndex,
-                updateActiveIndex: updateActiveIndex)
-            : null,
-        body: Row(
-          children: [
-            if (screenSize != ScreenWidthSize.COMPACT)
-              SideBarNavigation(
-                  items: items,
-                  activeIndex: activeIndex,
-                  updateActiveIndex: updateActiveIndex),
-            if (screenSize != ScreenWidthSize.COMPACT)
-              const Divider(height: double.infinity, color: AppColors.grey),
-            Expanded(
-              child: items[activeIndex].screen,
-            )
-          ],
-        ));
+                updateActiveIndex: updateActiveIndex),
+          // if (screenSize != ScreenWidthSize.COMPACT)
+          const Divider(
+              height: double.infinity, thickness: 4, color: AppColors.grey),
+          Expanded(
+            child: items[activeIndex].screen,
+          )
+        ],
+      ),
+    );
   }
 }

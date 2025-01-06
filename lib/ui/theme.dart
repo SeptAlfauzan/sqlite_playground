@@ -3,6 +3,32 @@ import 'package:sql_playground/ui/colors.dart';
 
 ThemeData getDarkTheme() {
   return ThemeData(
+    navigationBarTheme: NavigationBarThemeData(
+      indicatorColor: Colors.transparent,
+      labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
+        (Set<WidgetState> states) => states.contains(WidgetState.selected)
+            ? const TextStyle(color: AppColors.lime)
+            : const TextStyle(color: AppColors.grey),
+      ),
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData>(
+        (Set<WidgetState> states) => states.contains(WidgetState.selected)
+            ? const IconThemeData(color: AppColors.lime)
+            : const IconThemeData(color: AppColors.grey),
+      ),
+    ),
+    navigationDrawerTheme: NavigationDrawerThemeData(
+      indicatorColor: Colors.transparent,
+      labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
+        (Set<WidgetState> states) => states.contains(WidgetState.selected)
+            ? const TextStyle(color: AppColors.lime)
+            : const TextStyle(color: AppColors.grey),
+      ),
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData>(
+        (Set<WidgetState> states) => states.contains(WidgetState.selected)
+            ? const IconThemeData(color: AppColors.lime)
+            : const IconThemeData(color: AppColors.grey),
+      ),
+    ),
     fontFamily: 'IBMPlexMono',
     useMaterial3: true,
     brightness: Brightness.dark,

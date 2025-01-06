@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sql_playground/common/domain/entities/nav_item.dart';
-import 'package:sql_playground/ui/colors.dart';
 
 class SideBarNavigation extends StatelessWidget {
   final List<NavItem> items;
@@ -22,7 +21,6 @@ class SideBarNavigation extends StatelessWidget {
         ...items.map((item) => NavigationDrawerDestination(
               icon: Icon(item.icon),
               label: Text(item.label),
-              backgroundColor: Colors.transparent,
             )),
       ],
     );
