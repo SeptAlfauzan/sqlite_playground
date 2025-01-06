@@ -62,9 +62,9 @@ class _AppState extends State<App> {
                 items: items,
                 activeIndex: activeIndex,
                 updateActiveIndex: updateActiveIndex),
-          // if (screenSize != ScreenWidthSize.COMPACT)
-          const Divider(
-              height: double.infinity, thickness: 4, color: AppColors.grey),
+          if (screenSize != ScreenWidthSize.COMPACT)
+            const VerticalDivider(
+                thickness: 1, width: 1, color: AppColors.grey),
           Expanded(
             child: items[activeIndex].screen,
           )

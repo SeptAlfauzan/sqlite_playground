@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sql_playground/modules/playground/presentation/providers/output_container.dart';
 import 'package:sql_playground/modules/playground/presentation/providers/playground.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/output_time_devider.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/organism/editor.dart';
@@ -21,6 +22,7 @@ class _PlaygroundViewState extends ConsumerState<PlaygroundView> {
   Widget build(BuildContext context) {
     final screenHeightSize = WindowScreen().calculateScreenHeight(context);
     final playgroundEditorState = ref.watch(playgroundEditorProvider);
+    final outputContainerHeightState = ref.watch(outputContainerProvider);
 
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -70,30 +72,44 @@ class _PlaygroundViewState extends ConsumerState<PlaygroundView> {
           color: Colors.grey,
         ),
         SizedBox(
-          height: screenHeightSize == ScreenHeightSize.COMPACT ? 120 : 240,
+          height: outputContainerHeightState,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const OutputTimeDevider(),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: playgroundEditorState.when(
-                  initial: () => const SizedBox.shrink(),
-                  loading: () => const CircularProgressIndicator(),
-                  success: (data) => Text(data),
-                  fail: (error) => Text(error,
-                      style:
-                          TextStyle(color: getDarkTheme().colorScheme.onError)),
+              MouseRegion(
+                cursor: SystemMouseCursors.resizeUpDown,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (event) {
+                    ref
+                        .read(outputContainerProvider.notifier)
+                        .resize(deltaY: event.delta.dy, context: context);
+                  },
+                  child: const OutputTimeDevider(),
                 ),
-              )
-                  //Datatable(
-                  //  records: _userRecord,
-                  //),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: playgroundEditorState.when(
+                    initial: () => const SizedBox.shrink(),
+                    loading: () => const CircularProgressIndicator(),
+                    success: (data) => Text(data),
+                    fail: (error) => SingleChildScrollView(
+                      child: Text(error,
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: getDarkTheme().colorScheme.onError)),
+                    ),
                   ),
+                ),
+
+                //Datatable(
+                //  records: _userRecord,
+                //),
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
