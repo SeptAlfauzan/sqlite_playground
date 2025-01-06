@@ -4,6 +4,7 @@ import 'package:sql_playground/modules/playground/presentation/providers/output_
 import 'package:sql_playground/modules/playground/presentation/providers/playground.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/atoms/output_time_devider.dart';
 import 'package:sql_playground/modules/playground/presentation/widgets/organism/editor.dart';
+import 'package:sql_playground/modules/playground/presentation/widgets/organism/code_editor.dart';
 import 'package:sql_playground/ui/colors.dart';
 import 'package:sql_playground/ui/theme.dart';
 import 'package:sql_playground/ui/window_screen.dart';
@@ -31,19 +32,23 @@ class _PlaygroundViewState extends ConsumerState<PlaygroundView> {
         Expanded(
           child: Stack(
             children: [
-              //Expanded(
-              //  child:
-              Editor(
-                height: double.infinity,
-                onUpdate: (query) {
-                  setState(
-                    () {
+              // Editor(
+              //   height: double.infinity,
+              //   onUpdate: (query) {
+              //     setState(
+              //       () {
+              //         _query = query;
+              //       },
+              //     );
+              //   },
+              // ),
+              CodeEditor(
+                  height: double.infinity,
+                  onUpdate: (query) {
+                    setState(() {
                       _query = query;
-                    },
-                  );
-                },
-                //),
-              ),
+                    });
+                  }),
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(

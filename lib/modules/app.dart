@@ -55,20 +55,22 @@ class _AppState extends State<App> {
               activeIndex: activeIndex,
               updateActiveIndex: updateActiveIndex)
           : null,
-      body: Row(
-        children: [
-          if (screenSize != ScreenWidthSize.COMPACT)
-            SideBarNavigation(
-                items: items,
-                activeIndex: activeIndex,
-                updateActiveIndex: updateActiveIndex),
-          if (screenSize != ScreenWidthSize.COMPACT)
-            const VerticalDivider(
-                thickness: 1, width: 1, color: AppColors.grey),
-          Expanded(
-            child: items[activeIndex].screen,
-          )
-        ],
+      body: SafeArea(
+        child: Row(
+          children: [
+            if (screenSize != ScreenWidthSize.COMPACT)
+              SideBarNavigation(
+                  items: items,
+                  activeIndex: activeIndex,
+                  updateActiveIndex: updateActiveIndex),
+            if (screenSize != ScreenWidthSize.COMPACT)
+              const VerticalDivider(
+                  thickness: 1, width: 1, color: AppColors.grey),
+            Expanded(
+              child: items[activeIndex].screen,
+            )
+          ],
+        ),
       ),
     );
   }

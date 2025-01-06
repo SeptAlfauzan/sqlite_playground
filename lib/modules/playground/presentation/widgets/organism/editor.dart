@@ -44,74 +44,75 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: AppColors.darkBlack,
-        padding: const EdgeInsets.all(0),
-        height: widget.height,
-        child: FutureBuilder<Highlighter>(
-          future: _highlighter,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: SizedBox(
-                  width: 48,
-                  height: 48,
-                  child: CircularProgressIndicator(),
+      color: AppColors.darkBlack,
+      padding: const EdgeInsets.all(0),
+      height: widget.height,
+      child: FutureBuilder<Highlighter>(
+        future: _highlighter,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: SizedBox(
+                width: 48,
+                height: 48,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          if (!snapshot.hasData) {
+            return const Text('No highlighter available');
+          }
+
+          return Stack(
+            children: [
+              TextField(
+                expands: true,
+                controller: _editorController,
+                style: const TextStyle(
+                  letterSpacing: 1,
+                  height: 1.5,
+                  fontFamily: 'monospace',
+                  fontSize: 14,
+                  color: Colors.transparent,
+                  shadows: [
+                    Shadow(
+                      color: Colors.transparent,
+                      offset: Offset.zero,
+                      blurRadius: 0,
+                    ),
+                  ],
                 ),
-              );
-            }
-
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-
-            if (!snapshot.hasData) {
-              return const Text('No highlighter available');
-            }
-
-            return Stack(
-              children: [
-                TextField(
-                  expands: true,
-                  controller: _editorController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 0),
+                  border: InputBorder.none,
+                  fillColor: Colors.transparent,
+                  filled: true,
+                ),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+                child: Text.rich(
+                  _hightlighedCode,
                   style: const TextStyle(
                     letterSpacing: 1,
                     height: 1.5,
                     fontFamily: 'monospace',
                     fontSize: 14,
-                    color: Colors.transparent,
-                    shadows: [
-                      Shadow(
-                        color: Colors.transparent,
-                        offset: Offset.zero,
-                        blurRadius: 0,
-                      ),
-                    ],
-                  ),
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 0),
-                    border: InputBorder.none,
-                    fillColor: Colors.transparent,
-                    filled: true,
-                  ),
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
-                  child: Text.rich(
-                    _hightlighedCode,
-                    style: const TextStyle(
-                      letterSpacing: 1,
-                      height: 1.5,
-                      fontFamily: 'monospace',
-                      fontSize: 14,
-                    ),
                   ),
                 ),
-              ],
-            );
-          },
-        ));
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
