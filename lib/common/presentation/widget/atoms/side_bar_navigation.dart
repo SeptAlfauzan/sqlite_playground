@@ -16,13 +16,13 @@ class SideBarNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationDrawer(
-      backgroundColor: AppColors.darkGrey,
       selectedIndex: activeIndex,
       onDestinationSelected: updateActiveIndex,
       children: [
         ...items.map((item) => NavigationDrawerDestination(
               icon: Icon(item.icon),
               label: Text(item.label),
+              backgroundColor: Colors.transparent,
             )),
       ],
     );

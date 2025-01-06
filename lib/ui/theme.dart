@@ -3,6 +3,7 @@ import 'package:sql_playground/ui/colors.dart';
 
 ThemeData getDarkTheme() {
   return ThemeData(
+    fontFamily: 'IBMPlexMono',
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: const ColorScheme.dark(

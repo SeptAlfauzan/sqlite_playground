@@ -4,6 +4,7 @@ import 'package:sql_playground/common/presentation/widget/atoms/bottom_bar_navig
 import 'package:sql_playground/common/presentation/widget/atoms/side_bar_navigation.dart';
 import 'package:sql_playground/modules/erd/presentation/erd_view.dart';
 import 'package:sql_playground/modules/playground/presentation/playground_view.dart';
+import 'package:sql_playground/ui/colors.dart';
 import 'package:sql_playground/ui/window_screen.dart';
 
 class App extends StatefulWidget {
@@ -48,26 +49,6 @@ class _AppState extends State<App> {
 
     return Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
-          // Only show drawer button when screen is NOT compact
-          leading: screenSize != ScreenWidthSize.COMPACT
-              ? IconButton(
-                  icon: const Icon(
-                    Icons.menu,
-                    color: Colors.white10,
-                  ),
-                  onPressed: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                  },
-                )
-              : null,
-        ),
-        drawer: screenSize != ScreenWidthSize.COMPACT
-            ? SideBarNavigation(
-                items: items,
-                activeIndex: activeIndex,
-                updateActiveIndex: updateActiveIndex)
-            : null,
         bottomNavigationBar: screenSize == ScreenWidthSize.COMPACT
             ? BottomBarNavigation(
                 items: items,
@@ -81,6 +62,8 @@ class _AppState extends State<App> {
                   items: items,
                   activeIndex: activeIndex,
                   updateActiveIndex: updateActiveIndex),
+            if (screenSize != ScreenWidthSize.COMPACT)
+              const Divider(height: double.infinity, color: AppColors.grey),
             Expanded(
               child: items[activeIndex].screen,
             )
