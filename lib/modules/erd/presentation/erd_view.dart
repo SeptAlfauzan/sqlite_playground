@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +8,6 @@ import 'package:sql_playground/modules/erd/presentation/providers/erd_line_conne
 import 'package:sql_playground/modules/erd/presentation/providers/erd_visualizator.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/erd_table.dart';
 import 'package:sql_playground/modules/erd/presentation/widgets/atoms/line_connector.dart';
-
 
 class ErdView extends ConsumerStatefulWidget {
   const ErdView({super.key});
@@ -128,124 +126,116 @@ class _ErdViewState extends ConsumerState<ErdView> {
               _containerX += deltaX;
             });
           },
-          child: Transform.scale(
-            scale: _containerScale,
-            child: erdisualizatorState.when(
-              initial: () => const Center(
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(),
-                ),
+          child: erdisualizatorState.when(
+            initial: () => const Center(
+              child: SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(),
               ),
-              loading: () => const Center(
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              success: (data) => GloballyTranslateStackedWidgets(
-                key: _erdContainerKey,
-                //need to mulply with _containerScale to match with current container scale
-                offset: Offset(_containerX, _containerY),
-                children: data.tables.isEmpty
-                    ? []
-                    : [
-                        //line connector
-                        ...erdLineConnectorState
-                            .map(
-                              (line) => CustomPaint(
-                                painter: LineConnector(
-                                  startPoint: Offset(line.firstEntityPos.x,
-                                      line.firstEntityPos.y),
-                                  destPoint: Offset(line.secondEntityPos.x,
-                                      line.secondEntityPos.y),
-                                  onErrorDraw: (error) {
-                                    print(error);
-                                  },
-                                ),
-                                child: Container(),
-                              ),
-                            )
-                            ,
-                        //table erd
-                        ...data.tables
-                            .asMap()
-                            .map((index, tableInfo) {
-                              // print(erdTablesSize);
-                              return MapEntry(
-                                index,
-                                ErdTable(
-                                  // key: Key(index.toString()),
-                                  tableInfo: tableInfo,
-                                  useCenterOfTableUpdateLocation: true,
-                                  initialXpos: index * 300,
-                                  initialYpos: 0,
-                                  // onLoadBoxSize: (size) {
-                                  //   if (mounted) {
-                                  //     // Check if widget is still mounted
-                                  //     setState(() {
-                                  //       erdTablesSize.add(size);
-                                  //     });
-                                  //   }
-                                  // },
-                                  onDragUpdate: (offset) {
-                                    setState(
-                                      () {
-                                        startPoint = offset;
-                                        ref
-                                            .read(erdLineConnectorProvider
-                                                .notifier)
-                                            .updateLineConnectorPosition(
-                                              entityName: tableInfo.tableName,
-                                              entityPosition: Position(
-                                                x: offset.dx,
-                                                y: offset.dy,
-                                              ),
-                                            );
-                                      },
-                                    );
-                                  },
-                                ),
-                              );
-                            })
-                            .values
-                            
-                        // CustomPaint(
-                        //   painter: LineConnector(
-                        //     startPoint: startPoint,
-                        //     destPoint: destPoint,
-                        //     onErrorDraw: (error) {
-                        //       print(error);
-                        //     },
-                        //   ),
-                        //   child: Container(),
-                        // ),
-                        // ErdTable(
-                        //   useCenterOfTableUpdateLocation: true,
-                        //   initialXpos: 0,
-                        //   initialYpos: 0,
-                        //   onDragUpdate: (offset) {
-                        //     setState(() {
-                        //       startPoint = offset;
-                        //     });
-                        //   },
-                        // ),
-                        // ErdTable(
-                        //   useCenterOfTableUpdateLocation: true,
-                        //   initialXpos: 0,
-                        //   initialYpos: 0,
-                        //   onDragUpdate: (offset) {
-                        //     setState(() {
-                        //       destPoint = offset;
-                        //     });
-                        //   },
-                        // ),
-                      ],
-              ),
-              fail: (error) => Text(error),
             ),
+            loading: () => const Center(
+              child: SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            success: (data) => GloballyTranslateStackedWidgets(
+              scale: _containerScale,
+              key: _erdContainerKey,
+              //need to mulply with _containerScale to match with current container scale
+              offset: Offset(_containerX, _containerY),
+              children: data.tables.isEmpty
+                  ? []
+                  : [
+                      //line connector
+                      ...erdLineConnectorState.map(
+                        (line) => CustomPaint(
+                          painter: LineConnector(
+                            startPoint: Offset(
+                                line.firstEntityPos.x, line.firstEntityPos.y),
+                            destPoint: Offset(
+                                line.secondEntityPos.x, line.secondEntityPos.y),
+                            onErrorDraw: (error) {
+                              print(error);
+                            },
+                          ),
+                          child: Container(),
+                        ),
+                      ),
+                      //table erd
+                      ...data.tables.asMap().map((index, tableInfo) {
+                        // print(erdTablesSize);
+                        return MapEntry(
+                          index,
+                          ErdTable(
+                            // key: Key(index.toString()),
+                            tableInfo: tableInfo,
+                            useCenterOfTableUpdateLocation: true,
+                            initialXpos: index * 300,
+                            initialYpos: 0,
+                            // onLoadBoxSize: (size) {
+                            //   if (mounted) {
+                            //     // Check if widget is still mounted
+                            //     setState(() {
+                            //       erdTablesSize.add(size);
+                            //     });
+                            //   }
+                            // },
+                            onDragUpdate: (offset) {
+                              setState(
+                                () {
+                                  startPoint = offset;
+                                  ref
+                                      .read(erdLineConnectorProvider.notifier)
+                                      .updateLineConnectorPosition(
+                                        entityName: tableInfo.tableName,
+                                        entityPosition: Position(
+                                          x: offset.dx,
+                                          y: offset.dy,
+                                        ),
+                                      );
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      }).values
+
+                      // CustomPaint(
+                      //   painter: LineConnector(
+                      //     startPoint: startPoint,
+                      //     destPoint: destPoint,
+                      //     onErrorDraw: (error) {
+                      //       print(error);
+                      //     },
+                      //   ),
+                      //   child: Container(),
+                      // ),
+                      // ErdTable(
+                      //   useCenterOfTableUpdateLocation: true,
+                      //   initialXpos: 0,
+                      //   initialYpos: 0,
+                      //   onDragUpdate: (offset) {
+                      //     setState(() {
+                      //       startPoint = offset;
+                      //     });
+                      //   },
+                      // ),
+                      // ErdTable(
+                      //   useCenterOfTableUpdateLocation: true,
+                      //   initialXpos: 0,
+                      //   initialYpos: 0,
+                      //   onDragUpdate: (offset) {
+                      //     setState(() {
+                      //       destPoint = offset;
+                      //     });
+                      //   },
+                      // ),
+                    ],
+            ),
+            fail: (error) => Text(error),
           ),
         ),
       ),
@@ -256,10 +246,12 @@ class _ErdViewState extends ConsumerState<ErdView> {
 class GloballyTranslateStackedWidgets extends StatelessWidget {
   final List<Widget> children;
   final Offset offset;
+  final double scale;
   const GloballyTranslateStackedWidgets({
     super.key,
     required this.offset,
     required this.children,
+    required this.scale,
   });
 
   @override
@@ -269,15 +261,18 @@ class GloballyTranslateStackedWidgets extends StatelessWidget {
       decoration: const BoxDecoration(),
       width: double.infinity,
       height: double.infinity,
-      child: Stack(
-        children: children
-            .map(
-              (child) => Transform.translate(
-                offset: offset,
-                child: child,
-              ),
-            )
-            .toList(),
+      child: Transform.scale(
+        scale: scale,
+        child: Stack(
+          children: children
+              .map(
+                (child) => Transform.translate(
+                  offset: offset,
+                  child: child,
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
