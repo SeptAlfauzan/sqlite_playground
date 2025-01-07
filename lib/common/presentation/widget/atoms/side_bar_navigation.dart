@@ -15,6 +15,7 @@ class SideBarNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationDrawer(
+      tilePadding: const EdgeInsets.all(0),
       selectedIndex: activeIndex,
       onDestinationSelected: updateActiveIndex,
       children: [
